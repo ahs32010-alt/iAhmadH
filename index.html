@@ -678,6 +678,11 @@
             <div class="muted" id="coldLine" style="font-size:0.85rem;margin-top:4px;display:none;"></div>
 
             <div class="pours" id="pours"></div>
+            <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--border);">
+              <p style="margin:0; font-weight:700; font-size:0.9rem; color:var(--text); line-height:1.5;">
+                ارجع صب الماء في كل مرة بعد ما تشوف سطح القهوة
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -759,12 +764,15 @@
         <p class="section-title">معلومات سريعة</p>
         <div class="card" id="quick-notes">
           <p class="lead" style="font-size:0.92rem; margin-bottom:6px;">
-            مساحة بسيطة لملاحظات سريعة تفيدك مع كل تحضير:
           </p>
           <ul class="muted" style="margin:0; padding-right:18px; font-size:0.88rem; line-height:1.7;">
-            <li>درجة حرارة الماء، وقت التخمير، أو نوع الفلتر.</li>
-            <li>أي ملاحظة تحس إنها حسّنت طعم الكوب.</li>
-            <li>تقدر تعدل النصوص هنا من الكود في أي وقت.</li>
+            <li>أفضل ماء تستخدمه للترشيح: نوفا - تانيا.</li>
+            <li>أفضل فلاتر: من شركة كافيك.</li>
+            <li>جرب تثبت على وصفة واحدة وتقلل تغيير العوامل، وبعدين طوّر منها.</li>
+            <li>حاول تصب بثبات، وبنزول عند سطح القهوة.</li>
+            <li>لا تحكم على قهوتك من أول أو ثاني كوب، ياخي اصبر.</li>
+
+
           </ul>
         </div>
       </div>
@@ -951,7 +959,7 @@
         ];
 
         const coldPours = [
-          { label: 'الترطيب (ماء فقط)', amount: bloomCold, total: totalsCold[0] },
+          { label: 'الترطيب', amount: bloomCold, total: totalsCold[0] },
           { label: 'الصبة ٢', amount: eachPourCold, total: totalsCold[1] },
           { label: 'الصبة ٣', amount: eachPourCold, total: totalsCold[2] },
           { label: 'الصبة ٤', amount: eachPourCold, total: totalsCold[3] },
