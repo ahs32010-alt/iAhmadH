@@ -436,6 +436,17 @@
       min-width: 70px;
       text-align: center;
     }
+    .pour span .pour-label {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 0.75rem;
+      margin-left: 4px;
+    }
+    .pour span .pour-number {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--accent-strong);
+    }
     .hint {
       margin-top: 10px;
       background: rgba(255,255,255,0.85);
@@ -557,7 +568,6 @@
         <div class="mode-toggle" id="brewModeToggle">
           <button type="button" class="mode-chip active" data-mode="hot" data-view="brew">القهوة الحارة</button>
           <button type="button" class="mode-chip" data-mode="cold" data-view="brew">القهوة الباردة</button>
-          <button type="button" class="mode-chip" data-view="fix">عالج كوبك</button>
         </div>
 
         <!-- صفحة إعداد القهوة (الحارة / الباردة) -->
@@ -596,7 +606,7 @@
             </div>
           </div>
 
-          <p class="section-title" style="margin-top:14px;">تفاصيل الكوب، والصبات:</p>
+          <p class="section-title" style="margin-top:14px;">تفاصيل الكوب والصبات:</p>
           <div class="output-card">
             <span class="badge">الإجمالي</span>
             <div class="total" id="totalWater">-- مل</div>
@@ -606,29 +616,31 @@
             <div class="pours" id="pours"></div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <!-- صفحة عالج كوبك -->
-        <div id="fix-view" style="display:none; margin-top:6px;">
-          <p class="section-title">عالج كوبك</p>
-          <div class="card">
-            <p class="lead" style="font-size:0.92rem; margin-bottom:6px;">
-              كيف طعم الكوب معك؟
-            </p>
-            <div class="fix-choices" id="fixChoices">
-              <button type="button" class="fix-chip" data-issue="bitter"><span>مرارة عالية</span></button>
-              <button type="button" class="fix-chip" data-issue="acidic"><span>حمضية عالية</span></button>
-              <button type="button" class="fix-chip" data-issue="cold"><span>باردة</span></button>
-              <button type="button" class="fix-chip" data-issue="thin"><span>قوامها خفيف</span></button>
-              <button type="button" class="fix-chip" data-issue="burnt"><span>طعم حرق</span></button>
-            </div>
+    <!-- قسم عالج كوبك منفصل -->
+    <section class="container" style="margin-top:10px;">
+      <div class="content">
+        <p class="section-title">عالج كوبك</p>
+        <div class="card">
+          <p class="lead" style="font-size:0.92rem; margin-bottom:6px;">
+            كيف طعم الكوب معك؟
+          </p>
+          <div class="fix-choices" id="fixChoices">
+            <button type="button" class="fix-chip" data-issue="bitter"><span>مرارة عالية</span></button>
+            <button type="button" class="fix-chip" data-issue="acidic"><span>حمضية عالية</span></button>
+            <button type="button" class="fix-chip" data-issue="cold"><span>باردة</span></button>
+            <button type="button" class="fix-chip" data-issue="thin"><span>قوامها خفيف</span></button>
+            <button type="button" class="fix-chip" data-issue="burnt"><span>طعم حرق</span></button>
+          </div>
 
-            <div class="fix-step" id="fixStepBox" style="display:none;">
-              <div class="fix-step-title" id="fixStepTitle"></div>
-              <div class="muted" id="fixStepText"></div>
-              <div class="fix-actions">
-                <button type="button" class="fix-btn fix-btn-reset" id="fixReset">زبطت الحمدلله</button>
-                <button type="button" class="fix-btn fix-btn-next" id="fixNext">ما زبطت، وش أسوي؟</button>
-              </div>
+          <div class="fix-step" id="fixStepBox" style="display:none;">
+            <div class="fix-step-title" id="fixStepTitle"></div>
+            <div class="muted" id="fixStepText"></div>
+            <div class="fix-actions">
+              <button type="button" class="fix-btn fix-btn-reset" id="fixReset">تمام</button>
+              <button type="button" class="fix-btn fix-btn-next" id="fixNext">ما زبطت، وش أسوي؟</button>
             </div>
           </div>
         </div>
@@ -680,8 +692,6 @@
     const coldLineEl = document.getElementById('coldLine');
     const stepButtons = Array.from(document.querySelectorAll('.input-step'));
     const modeChips = Array.from(document.querySelectorAll('.mode-chip'));
-    const brewView = document.getElementById('brew-view');
-    const fixView = document.getElementById('fix-view');
     const fixChoices = document.getElementById('fixChoices');
     const fixStepBox = document.getElementById('fixStepBox');
     const fixStepTitle = document.getElementById('fixStepTitle');
@@ -815,7 +825,7 @@
                     مقدار الصبة: ${format(p.amount)} مل
                   </div>
                 </div>
-                <span>${format(p.total)} مل</span>
+                <span><span class="pour-label">صب إلى:</span> <span class="pour-number">${format(p.total)} مل</span></span>
               </div>`
           )
           .join('');
@@ -858,7 +868,7 @@
                     مقدار الصبة (ماء): ${format(p.amount)} مل
                   </div>
                 </div>
-                <span>${format(p.total)} مل</span>
+                <span><span class="pour-label">صب إلى:</span> <span class="pour-number">${format(p.total)} مل</span></span>
               </div>`
           )
           .join('');
@@ -885,33 +895,11 @@
 
     modeChips.forEach((chip) => {
       chip.addEventListener('click', () => {
-        const view = chip.dataset.view || 'brew';
         const mode = chip.dataset.mode;
-
-        modeChips.forEach((c) => c.classList.toggle('active', c === chip));
-
-        if (view === 'fix') {
-          // إظهار صفحة عالج كوبك
-          brewView.style.display = 'none';
-          fixView.style.display = 'block';
-          document.body.classList.remove('cold-mode');
-          // إعادة ضبط حالة التتبع
-          currentIssue = null;
-          currentIssueIndex = 0;
-          fixStepBox.style.display = 'none';
-          Array.from(fixChoices.querySelectorAll('.fix-chip')).forEach((c) =>
-            c.classList.remove('active')
-          );
-          return;
-        }
-
-        // الرجوع لصفحة الإعداد (حار/بارد)
-        brewView.style.display = 'block';
-        fixView.style.display = 'none';
-
         if (!mode) return;
         if (mode === currentMode) return;
 
+        modeChips.forEach((c) => c.classList.toggle('active', c === chip));
         currentMode = mode;
         document.body.classList.toggle('cold-mode', currentMode === 'cold');
         calculate();
