@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>حاسبة كوب القهوة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Outfit:wght@500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       color-scheme: light;
@@ -22,7 +25,7 @@
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: "Madani", "Madani Arabic", -apple-system, system-ui, "Cairo", "Helvetica Neue", Arial, sans-serif;
+      font-family: "Cairo", "Outfit", -apple-system, system-ui, "Helvetica Neue", Arial, sans-serif;
       background:
         radial-gradient(circle at 10% 0%, rgba(250, 230, 204, 0.8), transparent 60%),
         radial-gradient(circle at 90% 10%, rgba(218, 170, 120, 0.45), transparent 55%),
@@ -149,6 +152,7 @@
       margin: 0;
       color: var(--muted);
       font-size: 0.9rem;
+      font-weight: 700;
     }
     .hero-illustration {
       width: 88px;
@@ -447,6 +451,7 @@
       margin-top: 4px;
       color: var(--muted);
       font-size: 0.8rem;
+      font-weight: 700;
     }
   </style>
 </head>
@@ -579,8 +584,10 @@
       const totalWater = baseTotal;
 
       totalWaterEl.textContent = `${format(totalWater)} مل`;
-      summaryEl.textContent = `قهوة ${format(coffee)} جرام • ريشيو 1 / ${ratio} • ${modeLabel}`;
-      ratioInfoEl.textContent = `كل ١ جرام بن ≈ ${ratio.toFixed(1)} مل ماء`;
+      summaryEl.textContent = ""; // إخفاء سطر "قهوة 20 جرام • ريشيو ..."
+      ratioInfoEl.innerHTML =
+        `كل ١ جرام بن ≈ ${ratio.toFixed(1)} مل ماء<br>` +
+        `<strong style="font-size:0.86rem;">(تبي تثقلها نقص الرقم، تبي تخففها زِد الرقم)</strong>`;
 
       if (currentMode === 'hot') {
         const bloom = coffee * 2 + 10; // ترطيب = ضعف البن + ١٠ مل
