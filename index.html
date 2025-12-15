@@ -511,7 +511,7 @@
             </div>
             <div id="custom-wrapper" style="display:none">
               <label for="customRatio">ريشيو مخصص</label>
-              <input id="customRatio" type="number" min="10" max="25" step="0.1" value="15.5" inputmode="decimal" placeholder="مثال: 15.5">
+              <input id="customRatio" type="number" min="7" max="25" step="0.1" value="15.0" inputmode="decimal" placeholder="مثال: 15.0">
             </div>
           </div>
         </div>
@@ -554,10 +554,13 @@
 
     function calculate() {
       const coffee = parseFloat(coffeeInput.value);
-      let ratio =
-        ratioSelect.value === 'custom'
-          ? parseFloat(customRatioInput.value)
-          : parseFloat(ratioSelect.value);
+      let ratio;
+
+      if (ratioSelect.value === 'custom') {
+        ratio = customRatioInput ? parseFloat(customRatioInput.value) : NaN;
+      } else {
+        ratio = parseFloat(ratioSelect.value);
+      }
 
       // في الوضع البارد نضمن ألا يقل الريشيو عن 7
       if (currentMode === 'cold' && ratio < 7) {
@@ -585,9 +588,14 @@
 
       totalWaterEl.textContent = `${format(totalWater)} مل`;
       summaryEl.textContent = ""; // إخفاء سطر "قهوة 20 جرام • ريشيو ..."
-      ratioInfoEl.innerHTML =
-        `كل ١ جرام بن ≈ ${ratio.toFixed(1)} مل ماء<br>` +
-        `<strong style="font-size:0.86rem;">تبي تثقلها نقص الرقم، تبي تخففها زِد الرقم</strong>`;
+      if (currentMode === 'cold') {
+        ratioInfoEl.innerHTML =
+          `<strong style="font-size:0.86rem;">(نص الكمية قهوة، ونصها ثلج)</strong>`;
+      } else {
+        ratioInfoEl.innerHTML =
+          `كل ١ جرام بن ≈ ${ratio.toFixed(1)} مل ماء` +
+          `<br><strong style="font-size:0.86rem;">(خلك أفضل على 1/15)</strong>`;
+      }
 
       if (currentMode === 'hot') {
         const bloom = coffee * 2 + 10; // ترطيب = ضعف البن + ١٠ مل
@@ -670,7 +678,7 @@
           .join('');
 
         coldLineEl.style.display = 'block';
-        coldLineEl.innerHTML = `<strong>للوصفة الباردة:</strong> إجمالي ${format(coldTotal)} مل → ماء ${format(coldWater)} مل + <strong>ثلج ${format(coldIce)} مل </strong>في السيرفر.`;
+        coldLineEl.innerHTML = `<strong:</strong> إجمالي ${format(coldTotal)} مل : ترشيح ${format(coldWater)} مل + <strong>ثلج ${format(coldIce)} مل </strong>في السيرفر.`;
       }
 
       // حركة خفيفة على الإجمالي عند التحديث
@@ -702,11 +710,18 @@
 
     ratioSelect.addEventListener('change', () => {
       const isCustom = ratioSelect.value === 'custom';
-      customWrapper.style.display = isCustom ? 'block' : 'none';
+      if (customWrapper) {
+        customWrapper.style.display = isCustom ? 'block' : 'none';
+      }
+      // لو اختار مخصص لأول مرة نخلي فيه قيمة افتراضية لو كان فاضي
+      if (isCustom && customRatioInput && !customRatioInput.value) {
+        customRatioInput.value = ratioSelect.options[ratioSelect.selectedIndex]?.value || '15';
+      }
       calculate();
     });
 
     [coffeeInput, customRatioInput].forEach((el) => {
+      if (!el) return;
       el.addEventListener('input', calculate);
     });
 
