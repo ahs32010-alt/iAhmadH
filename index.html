@@ -503,22 +503,12 @@
       }
 
       const modeLabel = currentMode === 'cold' ? 'باردة' : 'حارة';
-      let totalWater = coffee * ratio;
-      let waterPortion = totalWater;
-      let icePortion = 0;
-
-      if (currentMode === 'cold') {
-        waterPortion = coffee * ratio;
-        icePortion = waterPortion; // نصف ماء نصف ثلج
-        totalWater = waterPortion + icePortion;
-      }
+      const baseTotal = coffee * ratio; // نفس الحارة دائماً
+      const totalWater = baseTotal;
 
       totalWaterEl.textContent = `${format(totalWater)} مل`;
       summaryEl.textContent = `قهوة ${format(coffee)} جرام • ريشيو 1 / ${ratio} • ${modeLabel}`;
-      ratioInfoEl.textContent =
-        currentMode === 'cold'
-          ? `كل ١ جرام بن ≈ ${ratio.toFixed(1)} مل ماء + ${ratio.toFixed(1)} مل ثلج`
-          : `كل ١ جرام بن ≈ ${ratio.toFixed(1)} مل ماء`;
+      ratioInfoEl.textContent = `كل ١ جرام بن ≈ ${ratio.toFixed(1)} مل ماء`;
 
       if (currentMode === 'hot') {
         const bloom = coffee * 2 + 10; // ترطيب = ضعف البن + ١٠ مل
@@ -560,9 +550,10 @@
         coldLineEl.style.display = 'none';
         coldLineEl.textContent = '';
       } else {
-        // القهوة الباردة: نصف المجموع ماء ونصفه ثلج
-        const coldWater = waterPortion;
-        const coldIce = icePortion;
+        // القهوة الباردة: نفس الإجمالي، لكن نصفه ماء يمر على البن ونصفه ثلج في الكوب
+        const coldTotal = baseTotal;
+        const coldWater = coldTotal / 2;
+        const coldIce = coldTotal - coldWater; // لضبط التقريب
 
         const bloomCold = Math.min(coldWater, coffee * 2 + 10);
         const remainingCold = coldWater - bloomCold;
@@ -600,7 +591,7 @@
           .join('');
 
         coldLineEl.style.display = 'block';
-        coldLineEl.textContent = `للوصفة الباردة: ماء ${format(coldWater)} مل + ثلج ${format(coldIce)} مل (الإجمالي ${format(totalWater)} مل).`;
+        coldLineEl.innerHTML = `<strong>للوصفة الباردة:</strong> إجمالي ${format(coldTotal)} مل → ماء ${format(coldWater)} مل + <strong>ثلج ${format(coldIce)} مل</strong> في الكوب.`;
       }
 
       // حركة خفيفة على الإجمالي عند التحديث
