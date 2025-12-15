@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>حاسبة كوب القهوة</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #faf4ec;
+      --bg-2: #f3e4d3;
+      --card: #ffffff;
+      --card-soft: #fdf7f1;
+      --text: #2f2115;
+      --muted: #8a7360;
+      --accent: #c4804b;
+      --accent-soft: #f2c9a1;
+      --accent-strong: #9a5422;
+      --border: rgba(128, 94, 62, 0.16);
+      --shadow-soft: 0 22px 50px rgba(131, 94, 64, 0.18);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Madani", "Madani Arabic", -apple-system, system-ui, "Cairo", "Helvetica Neue", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(250, 230, 204, 0.8), transparent 60%),
+        radial-gradient(circle at 90% 10%, rgba(218, 170, 120, 0.45), transparent 55%),
+        radial-gradient(circle at 50% 90%, rgba(203, 156, 113, 0.35), transparent 55%),
+        linear-gradient(160deg, var(--bg), var(--bg-2));
+      color: var(--text);
+      min-height: 100vh;
+      padding: 18px 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .shell {
+      width: min(460px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.86rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .app-header span:first-child {
+      font-weight: 700;
+      color: var(--accent-strong);
+    }
+
+    .container {
+      position: relative;
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.9), rgba(255,255,255,0.96));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 18px 16px 22px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at -10% 0%, rgba(242, 201, 161, 0.35), transparent 55%),
+        radial-gradient(circle at 120% 0%, rgba(196, 128, 75, 0.25), transparent 55%);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .hero-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .hero-title {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .hero-tag {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(247, 230, 209, 0.9);
+      color: var(--accent-strong);
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+    p.lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .hero-illustration {
+      width: 88px;
+      height: 88px;
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 30% 0%, #fff7ed, transparent 55%),
+        radial-gradient(circle at 70% 100%, #fed7aa, transparent 55%),
+        linear-gradient(145deg, #f97316, #9a3412);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow:
+        0 16px 40px rgba(148, 94, 54, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.6);
+    }
+    .cup {
+      width: 54px;
+      height: 40px;
+      border-radius: 16px 16px 20px 20px;
+      background: #fefce8;
+      position: relative;
+      box-shadow:
+        0 8px 16px rgba(124, 45, 18, 0.35),
+        inset 0 0 0 1px rgba(250, 204, 170, 1);
+    }
+    .cup::before {
+      content: "";
+      position: absolute;
+      inset: 7px 7px 14px;
+      border-radius: 12px 12px 18px 18px;
+      background: linear-gradient(180deg, #7c2d12, #431407);
+    }
+    .cup::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 12px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 3px solid #fed7aa;
+      box-shadow: inset 0 0 0 2px #f97316;
+      background: transparent;
+    }
+    .steam {
+      position: absolute;
+      top: -10px;
+      left: 16px;
+      display: flex;
+      gap: 5px;
+    }
+    .steam span {
+      display: block;
+      width: 4px;
+      height: 16px;
+      border-radius: 999px;
+      background: linear-gradient(to top, rgba(248, 250, 252, 0), rgba(255, 255, 255, 0.95));
+      opacity: 0.8;
+      animation: steam 2.2s ease-in-out infinite;
+    }
+    .steam span:nth-child(2) { animation-delay: .3s; }
+    .steam span:nth-child(3) { animation-delay: .6s; }
+
+    @keyframes steam {
+      0% { transform: translateY(6px); opacity: 0; }
+      35% { opacity: 0.9; }
+      100% { transform: translateY(-10px); opacity: 0; }
+    }
+
+    .section-title {
+      margin: 0 0 6px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .mode-toggle {
+      display: inline-flex;
+      padding: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(214, 158, 110, 0.55);
+      box-shadow: 0 8px 18px rgba(148, 94, 54, 0.15);
+      margin-bottom: 8px;
+      gap: 4px;
+    }
+    .mode-chip {
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      padding: 6px 12px;
+      font-size: 0.86rem;
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 600;
+      transition: background .15s, color .15s, transform .1s, box-shadow .15s;
+    }
+    .mode-chip.active {
+      background: #f97316;
+      color: #fefcfb;
+      box-shadow: 0 8px 18px rgba(194, 120, 69, 0.45);
+    }
+    .mode-chip:active {
+      transform: translateY(1px) scale(0.97);
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 18px;
+      padding: 12px 12px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 10px 25px rgba(148, 94, 54, 0.12);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      font-size: 0.9rem;
+    }
+    .field { margin-bottom: 10px; }
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .input-step {
+      border-radius: 999px;
+      border: 1px solid rgba(148,94,54,0.22);
+      background: #fdf4e7;
+      color: var(--accent-strong);
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 0;
+      cursor: pointer;
+      transition: background .15s, transform .1s, box-shadow .15s;
+    }
+    .input-step:active {
+      transform: translateY(1px) scale(0.97);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
+    }
+    input, select {
+      width: 100%;
+      background: var(--card-soft);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 0.98rem;
+      transition: border-color .2s, transform .12s, box-shadow .2s, background .2s;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      background: #ffffff;
+      box-shadow: 0 0 0 1px rgba(250, 250, 249, 0.9), 0 10px 22px rgba(193,128,75,0.25);
+    }
+    .inline {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 8px;
+    }
+
+    .output-card {
+      margin-top: 14px;
+      background: linear-gradient(145deg, #fefcf9, #fdf5ed);
+      border-radius: 18px;
+      padding: 14px 12px 15px;
+      border: 1px solid rgba(250, 250, 249, 0.9);
+      box-shadow: 0 14px 32px rgba(148, 94, 54, 0.18);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: rgba(247, 230, 209, .9);
+      color: var(--accent-strong);
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .badge::before {
+      content: "☕";
+      font-size: 0.95rem;
+    }
+    .total {
+      font-size: 1.7rem;
+      font-weight: 800;
+      margin: 8px 0 2px;
+      transition: transform .18s ease-out;
+    }
+    .total.bump { transform: scale(1.05); }
+    .muted {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .pours {
+      margin: 12px 0 0;
+      display: grid;
+      gap: 8px;
+    }
+    .pour {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fefaf6;
+      border-radius: 14px;
+      padding: 9px 10px;
+      border: 1px solid rgba(244, 224, 206, 0.9);
+      box-shadow: 0 7px 18px rgba(148, 94, 54, 0.15);
+      transition: transform .15s ease-out, box-shadow .15s ease-out, background .15s ease-out;
+    }
+    .pour:hover {
+      transform: translateY(-1px);
+      background: #fffaf5;
+      box-shadow: 0 12px 24px rgba(148, 94, 54, 0.22);
+    }
+    .pour strong { font-size: 0.95rem; }
+    .pour span {
+      background: rgba(250, 250, 249, 0.95);
+      color: var(--accent-strong);
+      padding: 6px 9px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      min-width: 70px;
+      text-align: center;
+    }
+    .hint {
+      margin-top: 10px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 14px;
+      padding: 9px 10px;
+      border: 1px dashed rgba(214, 158, 110, 0.7);
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+    footer {
+      text-align: center;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="app-header" aria-hidden="true"></header>
+
+    <section class="container">
+      <div class="content">
+        <div class="hero">
+          <div class="hero-main">
+            <div class="hero-title">
+              <h1>حاسبة كوب القهوة</h1>
+            </div>
+            <p class="lead">اضبط كمية البن والريشيو، ودع الصفحة تعتني بتوزيع الصبات.</p>
+          </div>
+          <div class="hero-illustration" aria-hidden="true">
+            <div class="cup">
+              <div class="steam">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mode-toggle" id="brewModeToggle">
+          <button type="button" class="mode-chip active" data-mode="hot">القهوة الحارة</button>
+          <button type="button" class="mode-chip" data-mode="cold">القهوة الباردة</button>
+        </div>
+
+        <p class="section-title">المدخلات</p>
+        <div class="card">
+          <div class="field">
+            <label for="coffee">كمية البن (جرام)</label>
+            <div class="input-row">
+              <button type="button" class="input-step" data-step="-1">−</button>
+              <input id="coffee" type="number" min="1" step="1" value="20" inputmode="numeric" placeholder="مثال: 20">
+              <button type="button" class="input-step" data-step="1">+</button>
+            </div>
+          </div>
+
+          <div class="field inline">
+            <div>
+              <label for="ratio">الريشيو</label>
+              <select id="ratio">
+                <option value="7">1 / 7</option>
+                <option value="8">1 / 8</option>
+                <option value="10">1 / 10</option>
+                <option value="12">1 / 12</option>
+                <option value="15" selected>1 / 15</option>
+                <option value="16">1 / 16</option>
+                <option value="17">1 / 17</option>
+                <option value="18">1 / 18</option>
+                <option value="custom">مخصص</option>
+              </select>
+              <div id="ratioInfo" class="muted" style="font-size:0.82rem;margin-top:4px;"></div>
+            </div>
+            <div id="custom-wrapper" style="display:none">
+              <label for="customRatio">ريشيو مخصص</label>
+              <input id="customRatio" type="number" min="10" max="25" step="0.1" value="15.5" inputmode="decimal" placeholder="مثال: 15.5">
+            </div>
+          </div>
+        </div>
+
+        <p class="section-title" style="margin-top:14px;">نتيجة التخمير</p>
+        <div class="output-card">
+          <span class="badge">الإجمالي</span>
+          <div class="total" id="totalWater">-- مل</div>
+          <div class="muted" id="summary"></div>
+          <div class="muted" id="coldLine" style="font-size:0.85rem;margin-top:4px;display:none;"></div>
+
+          <div class="pours" id="pours"></div>
+        </div>
+
+        <div class="hint">
+          أول صبة (الترطيب) = ضعف كمية البن + ١٠ مل. الباقي يُقسم على ٤ صبات متساوية، مع عرض الإجمالي التراكمي بعد كل صبة.
+          في وضع القهوة الباردة يتم استخدام نصف الإجمالي ماء (مع هذه الصبات) ونصفه ثلج في الكوب.
+        </div>
+      </div>
+    </section>
+
+    <footer>مُصمم للجوال • يعمل بدون إنترنت • تركيز على كوب واحد متقن</footer>
+  </main>
+
+  <script>
+    const coffeeInput = document.getElementById('coffee');
+    const ratioSelect = document.getElementById('ratio');
+    const customWrapper = document.getElementById('custom-wrapper');
+    const customRatioInput = document.getElementById('customRatio');
+    const totalWaterEl = document.getElementById('totalWater');
+    const summaryEl = document.getElementById('summary');
+    const poursEl = document.getElementById('pours');
+    const ratioInfoEl = document.getElementById('ratioInfo');
+    const coldLineEl = document.getElementById('coldLine');
+    const stepButtons = Array.from(document.querySelectorAll('.input-step'));
+    const modeChips = Array.from(document.querySelectorAll('.mode-chip'));
+    let currentMode = 'hot';
+
+    function format(number) {
+      return Number.isFinite(number) ? number.toFixed(0) : '--';
+    }
+
+    function calculate() {
+      const coffee = parseFloat(coffeeInput.value);
+      let ratio =
+        ratioSelect.value === 'custom'
+          ? parseFloat(customRatioInput.value)
+          : parseFloat(ratioSelect.value);
+
+      // في الوضع البارد نضمن ألا يقل الريشيو عن 7
+      if (currentMode === 'cold' && ratio < 7) {
+        ratio = 7;
+        if (ratioSelect.value === 'custom') {
+          customRatioInput.value = ratio;
+        } else {
+          ratioSelect.value = '7';
+        }
+      }
+
+      if (!coffee || coffee <= 0 || !ratio || ratio <= 0) {
+        totalWaterEl.textContent = '-- مل';
+        summaryEl.textContent = '';
+        poursEl.innerHTML = '';
+        ratioInfoEl.textContent = '';
+        coldLineEl.style.display = 'none';
+        coldLineEl.textContent = '';
+        return;
+      }
+
+      const modeLabel = currentMode === 'cold' ? 'باردة' : 'حارة';
+      let totalWater = coffee * ratio;
+      let waterPortion = totalWater;
+      let icePortion = 0;
+
+      if (currentMode === 'cold') {
+        waterPortion = coffee * ratio;
+        icePortion = waterPortion; // نصف ماء نصف ثلج
+        totalWater = waterPortion + icePortion;
+      }
+
+      totalWaterEl.textContent = `${format(totalWater)} مل`;
+      summaryEl.textContent = `قهوة ${format(coffee)} جرام • ريشيو 1 / ${ratio} • ${modeLabel}`;
+      ratioInfoEl.textContent =
+        currentMode === 'cold'
+          ? `كل ١ جرام بن ≈ ${ratio.toFixed(1)} مل ماء + ${ratio.toFixed(1)} مل ثلج`
+          : `كل ١ جرام بن ≈ ${ratio.toFixed(1)} مل ماء`;
+
+      if (currentMode === 'hot') {
+        const bloom = coffee * 2 + 10; // ترطيب = ضعف البن + ١٠ مل
+        const remaining = totalWater - bloom;
+        const eachPour = remaining / 4;
+
+        // كميات وتراكم بعد كل صبة
+        const totals = [
+          bloom,
+          bloom + eachPour,
+          bloom + eachPour * 2,
+          bloom + eachPour * 3,
+          totalWater,
+        ];
+
+        const pours = [
+          { label: 'الترطيب', amount: bloom, total: totals[0] },
+          { label: 'الصبة ٢', amount: eachPour, total: totals[1] },
+          { label: 'الصبة ٣', amount: eachPour, total: totals[2] },
+          { label: 'الصبة ٤', amount: eachPour, total: totals[3] },
+          { label: 'الصبة ٥', amount: eachPour, total: totals[4] },
+        ];
+
+        poursEl.innerHTML = pours
+          .map(
+            (p) => `
+              <div class="pour">
+                <div>
+                  <strong>${p.label}</strong>
+                  <div class="muted" style="font-size:0.82rem;margin-top:2px;">
+                    مقدار الصبة: ${format(p.amount)} مل
+                  </div>
+                </div>
+                <span>${format(p.total)} مل</span>
+              </div>`
+          )
+          .join('');
+
+        coldLineEl.style.display = 'none';
+        coldLineEl.textContent = '';
+      } else {
+        // القهوة الباردة: نصف المجموع ماء ونصفه ثلج
+        const coldWater = waterPortion;
+        const coldIce = icePortion;
+
+        const bloomCold = Math.min(coldWater, coffee * 2 + 10);
+        const remainingCold = coldWater - bloomCold;
+        const eachPourCold = remainingCold / 4;
+
+        const totalsCold = [
+          bloomCold,
+          bloomCold + eachPourCold,
+          bloomCold + eachPourCold * 2,
+          bloomCold + eachPourCold * 3,
+          coldWater,
+        ];
+
+        const coldPours = [
+          { label: 'الترطيب (ماء فقط)', amount: bloomCold, total: totalsCold[0] },
+          { label: 'الصبة ٢', amount: eachPourCold, total: totalsCold[1] },
+          { label: 'الصبة ٣', amount: eachPourCold, total: totalsCold[2] },
+          { label: 'الصبة ٤', amount: eachPourCold, total: totalsCold[3] },
+          { label: 'الصبة ٥', amount: eachPourCold, total: totalsCold[4] },
+        ];
+
+        poursEl.innerHTML = coldPours
+          .map(
+            (p) => `
+              <div class="pour">
+                <div>
+                  <strong>${p.label}</strong>
+                  <div class="muted" style="font-size:0.82rem;margin-top:2px;">
+                    مقدار الصبة (ماء): ${format(p.amount)} مل
+                  </div>
+                </div>
+                <span>${format(p.total)} مل</span>
+              </div>`
+          )
+          .join('');
+
+        coldLineEl.style.display = 'block';
+        coldLineEl.textContent = `للوصفة الباردة: ماء ${format(coldWater)} مل + ثلج ${format(coldIce)} مل (الإجمالي ${format(totalWater)} مل).`;
+      }
+
+      // حركة خفيفة على الإجمالي عند التحديث
+      totalWaterEl.classList.remove('bump');
+      void totalWaterEl.offsetWidth; // reflow لإعادة تشغيل الأنيميشن
+      totalWaterEl.classList.add('bump');
+    }
+
+    stepButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const step = parseInt(btn.dataset.step, 10) || 1;
+        let current = parseFloat(coffeeInput.value) || 0;
+        current = Math.max(1, current + step);
+        coffeeInput.value = current;
+        calculate();
+      });
+    });
+
+    modeChips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const mode = chip.dataset.mode;
+        if (!mode || mode === currentMode) return;
+        currentMode = mode;
+        modeChips.forEach((c) => c.classList.toggle('active', c === chip));
+        calculate();
+      });
+    });
+
+    ratioSelect.addEventListener('change', () => {
+      const isCustom = ratioSelect.value === 'custom';
+      customWrapper.style.display = isCustom ? 'block' : 'none';
+      calculate();
+    });
+
+    [coffeeInput, customRatioInput].forEach((el) => {
+      el.addEventListener('input', calculate);
+    });
+
+    calculate();
+  </script>
+</body>
+</html>
+
