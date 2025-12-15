@@ -446,6 +446,83 @@
       font-size: 0.86rem;
       line-height: 1.5;
     }
+    /* أنماط صفحة "عالج كوبك" */
+    .fix-choices {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .fix-chip {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(248, 250, 252, 0.9);
+      padding: 6px 10px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text);
+      transition: background .15s, transform .1s, box-shadow .15s, border-color .15s;
+    }
+    .fix-chip span {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .fix-chip.active {
+      background: var(--accent);
+      color: #f9fafb;
+      border-color: var(--accent-strong);
+      box-shadow: 0 8px 18px var(--shadow-soft);
+    }
+    .fix-chip:active {
+      transform: translateY(1px) scale(0.97);
+    }
+    .fix-step {
+      margin-top: 10px;
+      padding: 10px 11px;
+      border-radius: 14px;
+      background: var(--card-soft);
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .fix-step-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--accent-strong);
+      font-size: 0.9rem;
+    }
+    .fix-actions {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+    .fix-btn {
+      flex: 1;
+      border-radius: 999px;
+      border: none;
+      padding: 7px 10px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: background .15s, transform .1s, box-shadow .15s;
+    }
+    .fix-btn-next {
+      background: var(--accent);
+      color: #f9fafb;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+    .fix-btn-reset {
+      background: rgba(148,163,184,0.12);
+      color: var(--muted);
+    }
+    .fix-btn:active {
+      transform: translateY(1px) scale(0.97);
+    }
     footer {
       text-align: center;
       margin-top: 4px;
@@ -478,55 +555,112 @@
         </div>
 
         <div class="mode-toggle" id="brewModeToggle">
-          <button type="button" class="mode-chip active" data-mode="hot">القهوة الحارة</button>
-          <button type="button" class="mode-chip" data-mode="cold">القهوة الباردة</button>
+          <button type="button" class="mode-chip active" data-mode="hot" data-view="brew">القهوة الحارة</button>
+          <button type="button" class="mode-chip" data-mode="cold" data-view="brew">القهوة الباردة</button>
+          <button type="button" class="mode-chip" data-view="fix">عالج كوبك</button>
         </div>
 
-        <p class="section-title">المدخلات</p>
-        <div class="card">
-          <div class="field">
-            <label for="coffee">كمية البن (جرام)</label>
-            <div class="input-row">
-              <button type="button" class="input-step" data-step="-1">−</button>
-              <input id="coffee" type="number" min="1" step="1" value="20" inputmode="numeric" placeholder="مثال: 20">
-              <button type="button" class="input-step" data-step="1">+</button>
+        <!-- صفحة إعداد القهوة (الحارة / الباردة) -->
+        <div id="brew-view">
+          <p class="section-title">المدخلات</p>
+          <div class="card">
+            <div class="field">
+              <label for="coffee">كمية البن (جرام)</label>
+              <div class="input-row">
+                <button type="button" class="input-step" data-step="-1">−</button>
+                <input id="coffee" type="number" min="1" step="1" value="20" inputmode="numeric" placeholder="مثال: 20">
+                <button type="button" class="input-step" data-step="1">+</button>
+              </div>
+            </div>
+
+            <div class="field inline">
+              <div>
+                <label for="ratio">الريشيو</label>
+                <select id="ratio">
+                  <option value="7">1 / 7</option>
+                  <option value="8">1 / 8</option>
+                  <option value="10">1 / 10</option>
+                  <option value="12">1 / 12</option>
+                  <option value="15" selected>1 / 15</option>
+                  <option value="16">1 / 16</option>
+                  <option value="17">1 / 17</option>
+                  <option value="18">1 / 18</option>
+                  <option value="custom">مخصص</option>
+                </select>
+                <div id="ratioInfo" class="muted" style="font-size:0.82rem;margin-top:4px;"></div>
+              </div>
+              <div id="custom-wrapper" style="display:none">
+                <label for="customRatio">ريشيو مخصص</label>
+                <input id="customRatio" type="number" min="7" max="25" step="0.1" value="15.0" inputmode="decimal" placeholder="مثال: 15.0">
+              </div>
             </div>
           </div>
 
-          <div class="field inline">
-            <div>
-              <label for="ratio">الريشيو</label>
-              <select id="ratio">
-                <option value="7">1 / 7</option>
-                <option value="8">1 / 8</option>
-                <option value="10">1 / 10</option>
-                <option value="12">1 / 12</option>
-                <option value="15" selected>1 / 15</option>
-                <option value="16">1 / 16</option>
-                <option value="17">1 / 17</option>
-                <option value="18">1 / 18</option>
-                <option value="custom">مخصص</option>
-              </select>
-              <div id="ratioInfo" class="muted" style="font-size:0.82rem;margin-top:4px;"></div>
-            </div>
-            <div id="custom-wrapper" style="display:none">
-              <label for="customRatio">ريشيو مخصص</label>
-              <input id="customRatio" type="number" min="7" max="25" step="0.1" value="15.0" inputmode="decimal" placeholder="مثال: 15.0">
-            </div>
+          <p class="section-title" style="margin-top:14px;">تفاصيل الكوب، والصبات:</p>
+          <div class="output-card">
+            <span class="badge">الإجمالي</span>
+            <div class="total" id="totalWater">-- مل</div>
+            <div class="muted" id="summary"></div>
+            <div class="muted" id="coldLine" style="font-size:0.85rem;margin-top:4px;display:none;"></div>
+
+            <div class="pours" id="pours"></div>
           </div>
         </div>
 
-        <p class="section-title" style="margin-top:14px;">تفاصيل الكوب، والصبات:</p>
-        <div class="output-card">
-          <span class="badge">الإجمالي</span>
-          <div class="total" id="totalWater">-- مل</div>
-          <div class="muted" id="summary"></div>
-          <div class="muted" id="coldLine" style="font-size:0.85rem;margin-top:4px;display:none;"></div>
+        <!-- صفحة عالج كوبك -->
+        <div id="fix-view" style="display:none; margin-top:6px;">
+          <p class="section-title">عالج كوبك</p>
+          <div class="card">
+            <p class="lead" style="font-size:0.92rem; margin-bottom:6px;">
+              كيف طعم الكوب معك؟
+            </p>
+            <div class="fix-choices" id="fixChoices">
+              <button type="button" class="fix-chip" data-issue="bitter"><span>مرارة عالية</span></button>
+              <button type="button" class="fix-chip" data-issue="acidic"><span>حمضية عالية</span></button>
+              <button type="button" class="fix-chip" data-issue="cold"><span>باردة</span></button>
+              <button type="button" class="fix-chip" data-issue="thin"><span>قوامها خفيف</span></button>
+              <button type="button" class="fix-chip" data-issue="burnt"><span>طعم حرق</span></button>
+            </div>
 
-          <div class="pours" id="pours"></div>
+            <div class="fix-step" id="fixStepBox" style="display:none;">
+              <div class="fix-step-title" id="fixStepTitle"></div>
+              <div class="muted" id="fixStepText"></div>
+              <div class="fix-actions">
+                <button type="button" class="fix-btn fix-btn-reset" id="fixReset">زبطت الحمدلله</button>
+                <button type="button" class="fix-btn fix-btn-next" id="fixNext">ما زبطت، وش أسوي؟</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- قسم الطحنة ومعلومات سريعة -->
+    <section class="container" style="margin-top:10px;">
+      <div class="content">
+        <p class="section-title">الطحنة</p>
+        <div class="card" id="grind-notes">
+          <p class="lead" style="font-size:0.92rem;">
+            هنا تقدر تكتب ملاحظاتك عن درجة الطحنة المناسبة لكل وصفة، مثل:
+          </p>
+          <ul class="muted" style="margin:8px 0 0; padding-right:18px; font-size:0.88rem; line-height:1.7;">
+            <li>أدق للقهوة الحارة القصيرة.</li>
+            <li>أخشن للوصفات الأكبر أو القهوة الباردة.</li>
+            <li>عدّل على راحتك بحسب نتيجة الكوب.</li>
+          </ul>
         </div>
 
-      
+        <p class="section-title" style="margin-top:14px;">معلومات سريعة</p>
+        <div class="card" id="quick-notes">
+          <p class="lead" style="font-size:0.92rem; margin-bottom:6px;">
+            مساحة بسيطة لملاحظات سريعة تفيدك مع كل تحضير:
+          </p>
+          <ul class="muted" style="margin:0; padding-right:18px; font-size:0.88rem; line-height:1.7;">
+            <li>درجة حرارة الماء، وقت التخمير، أو نوع الفلتر.</li>
+            <li>أي ملاحظة تحس إنها حسّنت طعم الكوب.</li>
+            <li>تقدر تعدل النصوص هنا من الكود في أي وقت.</li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -546,7 +680,59 @@
     const coldLineEl = document.getElementById('coldLine');
     const stepButtons = Array.from(document.querySelectorAll('.input-step'));
     const modeChips = Array.from(document.querySelectorAll('.mode-chip'));
-    let currentMode = 'hot';
+    const brewView = document.getElementById('brew-view');
+    const fixView = document.getElementById('fix-view');
+    const fixChoices = document.getElementById('fixChoices');
+    const fixStepBox = document.getElementById('fixStepBox');
+    const fixStepTitle = document.getElementById('fixStepTitle');
+    const fixStepText = document.getElementById('fixStepText');
+    const fixNextBtn = document.getElementById('fixNext');
+    const fixResetBtn = document.getElementById('fixReset');
+    let currentMode = 'hot'; // حار أو بارد
+    let currentIssue = null;
+    let currentIssueIndex = 0;
+
+    const troubleshooting = {
+      bitter: {
+        title: 'مرارة عالية',
+        steps: [
+          'قلّل درجة حرارة الماء شوي (مثال: من 92° إلى 89-90°).',
+          'لسا مُرة؟ خشن الطحنة شوي وجرّب نفس الوصفة.',
+          'لسّا مزعجة؟ تأكد أن القهوة مناسبة للترشيح؛ المحاصيل الغامقة أو البلند غير المخصص للفلتر غالباً تعطي مرارة أعلى.'
+        ]
+      },
+      acidic: {
+        title: 'حمضية عالية',
+        steps: [
+          'زِد درجة حرارة الماء (مثال: من 89° إلى 90–92°).',
+          'لسه حمضيتها عالية؟ نعّم الطحنة شوي وجرب نفس الوصفة.',
+          'إذا ما زبطت معك؛ ممكن هذا المحصول ما يناسب ذائقتك وهذا طبيعي خصوصاً مع المعالجات المغسولة مثلًا، جرب الأثيوبيات بالمعالجة المجففة.'
+        ]
+      },
+      cold: {
+        title: 'الكوب بارد',
+        steps: [
+          'سخّن القمع والسيرفر والكوب قبل ما تبدأ الترشيح.',
+          'تأكد أن كل أدواتك دافئة قبل ما تصب القهوة؛ البرودة تسحب حرارة الكوب وتخفف النكهات.'
+        ]
+      },
+      thin: {
+        title: 'القوام خفيف',
+        steps: [
+          'تأكد من تاريخ القهوة، القهوة القديمة تفقد النكهة والقوام.',
+          'تأكد أن الطحنة طازجة وما جلست مطحونة فترة طويلة.',
+          'تأكد من إحكام إغلاق الكيس بين كل استخدام.',
+          'باقي خفيفة؟ قلّل الريشيو شوي، جرّب مثلاً 1/14.'
+        ]
+      },
+      burnt: {
+        title: 'طعم حرق',
+        steps: [
+          'لا تتحمس وترشّح بدرجة الغليان مباشرة (تصير لو ما عندك غلاية مخصصة للترشيح، اصبر شويات بعد ما تغلي الموية)',
+          'تأكد أن القهوة مخصصة للترشيح، مو موجهة للأسبريسو أو حمصتها غامقة بزيادة.'
+        ]
+      }
+    };
 
     function format(number) {
       return Number.isFinite(number) ? number.toFixed(0) : '--';
@@ -699,10 +885,34 @@
 
     modeChips.forEach((chip) => {
       chip.addEventListener('click', () => {
+        const view = chip.dataset.view || 'brew';
         const mode = chip.dataset.mode;
-        if (!mode || mode === currentMode) return;
-        currentMode = mode;
+
         modeChips.forEach((c) => c.classList.toggle('active', c === chip));
+
+        if (view === 'fix') {
+          // إظهار صفحة عالج كوبك
+          brewView.style.display = 'none';
+          fixView.style.display = 'block';
+          document.body.classList.remove('cold-mode');
+          // إعادة ضبط حالة التتبع
+          currentIssue = null;
+          currentIssueIndex = 0;
+          fixStepBox.style.display = 'none';
+          Array.from(fixChoices.querySelectorAll('.fix-chip')).forEach((c) =>
+            c.classList.remove('active')
+          );
+          return;
+        }
+
+        // الرجوع لصفحة الإعداد (حار/بارد)
+        brewView.style.display = 'block';
+        fixView.style.display = 'none';
+
+        if (!mode) return;
+        if (mode === currentMode) return;
+
+        currentMode = mode;
         document.body.classList.toggle('cold-mode', currentMode === 'cold');
         calculate();
       });
@@ -724,6 +934,58 @@
       if (!el) return;
       el.addEventListener('input', calculate);
     });
+
+    // تفاعل "عالج كوبك"
+    if (fixChoices) {
+      Array.from(fixChoices.querySelectorAll('.fix-chip')).forEach((chip) => {
+        chip.addEventListener('click', () => {
+          const issueKey = chip.dataset.issue;
+          if (!issueKey || !troubleshooting[issueKey]) return;
+
+          currentIssue = issueKey;
+          currentIssueIndex = 0;
+
+          Array.from(fixChoices.querySelectorAll('.fix-chip')).forEach((c) =>
+            c.classList.toggle('active', c === chip)
+          );
+
+          const issue = troubleshooting[issueKey];
+          fixStepTitle.textContent = issue.title;
+          fixStepText.textContent = issue.steps[0];
+          fixStepBox.style.display = 'block';
+
+          // لو خطوة وحدة فقط نخفي زر "ما زبطت؟"
+          fixNextBtn.style.display = issue.steps.length > 1 ? 'inline-block' : 'none';
+        });
+      });
+    }
+
+    if (fixNextBtn) {
+      fixNextBtn.addEventListener('click', () => {
+        if (!currentIssue || !troubleshooting[currentIssue]) return;
+        const issue = troubleshooting[currentIssue];
+        if (currentIssueIndex < issue.steps.length - 1) {
+          currentIssueIndex += 1;
+          fixStepText.textContent = issue.steps[currentIssueIndex];
+        }
+        if (currentIssueIndex >= issue.steps.length - 1) {
+          fixNextBtn.style.display = 'none';
+        }
+      });
+    }
+
+    if (fixResetBtn) {
+      fixResetBtn.addEventListener('click', () => {
+        currentIssue = null;
+        currentIssueIndex = 0;
+        fixStepBox.style.display = 'none';
+        if (fixChoices) {
+          Array.from(fixChoices.querySelectorAll('.fix-chip')).forEach((c) =>
+            c.classList.remove('active')
+          );
+        }
+      });
+    }
 
     calculate();
   </script>
