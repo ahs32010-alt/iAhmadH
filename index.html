@@ -449,7 +449,7 @@
 
         <div class="hint">
           أول صبة (الترطيب) = ضعف كمية البن + ١٠ مل. الباقي يُقسم على ٤ صبات متساوية، مع عرض الإجمالي التراكمي بعد كل صبة.
-          في وضع القهوة الباردة يتم استخدام نصف الإجمالي ماء (مع هذه الصبات) ونصفه ثلج في الكوب.
+          في وضع القهوة الباردة يتم استخدام نصف الإجمالي ماء (مع هذه الصبات) ونصفه ثلجفي السيرفر.
         </div>
       </div>
     </section>
@@ -550,7 +550,7 @@
         coldLineEl.style.display = 'none';
         coldLineEl.textContent = '';
       } else {
-        // القهوة الباردة: نفس الإجمالي، لكن نصفه ماء يمر على البن ونصفه ثلج في الكوب
+        // القهوة الباردة: نفس الإجمالي، لكن نصفه ماء يمر على البن ونصفه ثلجفي السيرفر
         const coldTotal = baseTotal;
         const coldWater = coldTotal / 2;
         const coldIce = coldTotal - coldWater; // لضبط التقريب
@@ -591,7 +591,7 @@
           .join('');
 
         coldLineEl.style.display = 'block';
-        coldLineEl.innerHTML = `<strong>للوصفة الباردة:</strong> إجمالي ${format(coldTotal)} مل → ماء ${format(coldWater)} مل + <strong>ثلج ${format(coldIce)} مل</strong> في الكوب.`;
+        coldLineEl.innerHTML = `<strong>للوصفة الباردة:</strong> إجمالي ${format(coldTotal)} مل → ماء ${format(coldWater)} مل + <strong>ثلج ${format(coldIce)} مل</strong>في السيرفر.`;
       }
 
       // حركة خفيفة على الإجمالي عند التحديث
