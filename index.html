@@ -189,12 +189,21 @@
         0 8px 16px rgba(124, 45, 18, 0.35),
         inset 0 0 0 1px rgba(250, 204, 170, 1);
     }
+    body.cold-mode .cup {
+      background: #e0f2fe;
+      box-shadow:
+        0 8px 16px rgba(37, 99, 235, 0.3),
+        inset 0 0 0 1px rgba(191, 219, 254, 1);
+    }
     .cup::before {
       content: "";
       position: absolute;
       inset: 7px 7px 14px;
       border-radius: 12px 12px 18px 18px;
       background: linear-gradient(180deg, #7c2d12, #431407);
+    }
+    body.cold-mode .cup::before {
+      background: linear-gradient(180deg, #0c4a6e, #075985);
     }
     .cup::after {
       content: "";
@@ -208,12 +217,19 @@
       box-shadow: inset 0 0 0 2px #f97316;
       background: transparent;
     }
+    body.cold-mode .cup::after {
+      border-color: #bfdbfe;
+      box-shadow: inset 0 0 0 2px #2563eb;
+    }
     .steam {
       position: absolute;
       top: -10px;
       left: 16px;
       display: flex;
       gap: 5px;
+    }
+    body.cold-mode .steam {
+      display: none;
     }
     .steam span {
       display: block;
@@ -232,11 +248,36 @@
       35% { opacity: 0.9; }
       100% { transform: translateY(-10px); opacity: 0; }
     }
+    .ice-cubes {
+      position: absolute;
+      top: -8px;
+      left: 12px;
+      display: none;
+      gap: 3px;
+    }
+    body.cold-mode .ice-cubes {
+      display: flex;
+    }
+    .ice-cube {
+      width: 6px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 2px;
+      box-shadow: 0 1px 2px rgba(37, 99, 235, 0.3);
+      animation: float 2s ease-in-out infinite;
+    }
+    .ice-cube:nth-child(1) { animation-delay: 0s; }
+    .ice-cube:nth-child(2) { animation-delay: 0.4s; }
+    .ice-cube:nth-child(3) { animation-delay: 0.8s; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+      50% { transform: translateY(-3px) rotate(5deg); opacity: 1; }
+    }
 
     .section-title {
       margin: 0 0 6px;
-      font-size: 0.88rem;
-      font-weight: 700;
+      font-size: 1.1rem;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--muted);
@@ -541,6 +582,24 @@
       font-size: 0.8rem;
       font-weight: 700;
     }
+    /* أنماط قسم الطحنة الديناميكي */
+    #grindResult {
+      animation: fadeInUp 0.4s ease-out;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    body.cold-mode #grindResult {
+      background: linear-gradient(145deg, rgba(219,234,254,0.6), rgba(191,219,254,0.4)) !important;
+      border-color: rgba(37,99,235,0.3) !important;
+    }
   </style>
 </head>
 <body>
@@ -560,6 +619,11 @@
             <div class="cup">
               <div class="steam">
                 <span></span><span></span><span></span>
+              </div>
+              <div class="ice-cubes">
+                <span class="ice-cube"></span>
+                <span class="ice-cube"></span>
+                <span class="ice-cube"></span>
               </div>
             </div>
           </div>
@@ -630,8 +694,8 @@
           <div class="fix-choices" id="fixChoices">
             <button type="button" class="fix-chip" data-issue="bitter"><span>مرارة عالية</span></button>
             <button type="button" class="fix-chip" data-issue="acidic"><span>حمضية عالية</span></button>
-            <button type="button" class="fix-chip" data-issue="cold"><span>باردة</span></button>
-            <button type="button" class="fix-chip" data-issue="thin"><span>قوامها خفيف</span></button>
+            <button type="button" class="fix-chip" data-issue="cold"><span>الكوب بارد</span></button>
+            <button type="button" class="fix-chip" data-issue="thin"><span>القوام خفيف</span></button>
             <button type="button" class="fix-chip" data-issue="burnt"><span>طعم حرق</span></button>
           </div>
 
@@ -650,19 +714,49 @@
     <!-- قسم الطحنة ومعلومات سريعة -->
     <section class="container" style="margin-top:10px;">
       <div class="content">
-        <p class="section-title">الطحنة</p>
+        <p class="section-title">درجة الطحن</p>
+        <p style="font-size:0.82rem; color:var(--muted); line-height:1.6; margin:0 0 12px 0; padding-right:4px;">
+          مافي أحد بيقدر يعطيك درجة الطحن الأكيدة إلا لو عنده نفس مطحنتك وقهوتك وحتى نفس تاريخ حمصتها.. الشغلة كلها (بين البين)، هذا القسم يساعدك فقط بشكل تقريبي، ويوفر عليك هدر
+        </p>
         <div class="card" id="grind-notes">
-          <p class="lead" style="font-size:0.92rem;">
-            هنا تقدر تكتب ملاحظاتك عن درجة الطحنة المناسبة لكل وصفة، مثل:
-          </p>
-          <ul class="muted" style="margin:8px 0 0; padding-right:18px; font-size:0.88rem; line-height:1.7;">
-            <li>أدق للقهوة الحارة القصيرة.</li>
-            <li>أخشن للوصفات الأكبر أو القهوة الباردة.</li>
-            <li>عدّل على راحتك بحسب نتيجة الكوب.</li>
-          </ul>
+          <div class="field">
+            <label for="coffeeType">اختر نوع القهوة</label>
+            <select id="coffeeType">
+              <option value="">-- اختر نوع القهوة --</option>
+              <option value="sumatra">سومطرة</option>
+              <option value="salvador">سلفادور</option>
+              <option value="honduras">هندوراس</option>
+              <option value="colombia">كولومبيا</option>
+              <option value="mexico">المكسيك</option>
+              <option value="guatemala">غواتيمالا</option>
+              <option value="costa-rica">كوستاريكا</option>
+              <option value="nicaragua">نيكاراغوا</option>
+              <option value="panama">بنما</option>
+              <option value="peru">بيرو</option>
+              <option value="ethiopia">أثيوبيا</option>
+              <option value="yemen">اليمن</option>
+              <option value="rwanda">راوندا</option>
+              <option value="uganda">أوغندا</option>
+              <option value="burundi">بورندي</option>
+              <option value="brazil">البرازيل</option>
+              <option value="kenya">كينيا</option>
+            </select>
+          </div>
+          <div id="grindResult" style="display:none; margin-top:12px; padding:12px; background:linear-gradient(145deg, rgba(247,230,209,0.6), rgba(242,201,161,0.4)); border-radius:14px; border:1px solid rgba(196,128,75,0.3);">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+              <span style="font-size:1.2rem;">☕</span>
+              <strong style="color:var(--accent-strong); font-size:0.95rem;">درجة الطحنة المناسبة:</strong>
+            </div>
+            <div id="grindLevel" style="font-size:1.1rem; font-weight:700; color:var(--accent-strong); margin-top:4px;"></div>
+          </div>
         </div>
+      </div>
+    </section>
 
-        <p class="section-title" style="margin-top:14px;">معلومات سريعة</p>
+    <!-- قسم معلومات سريعة -->
+    <section class="container" style="margin-top:10px;">
+      <div class="content">
+        <p class="section-title">معلومات سريعة</p>
         <div class="card" id="quick-notes">
           <p class="lead" style="font-size:0.92rem; margin-bottom:6px;">
             مساحة بسيطة لملاحظات سريعة تفيدك مع كل تحضير:
@@ -678,6 +772,12 @@
 
     <footer>الكوب اللي يروقك</footer>
     <footer>هدية من أحمد سليمان لك</footer>
+    <footer style="margin-top:8px;">
+      <a href="https://snapchat.com/t/SpGq00uR" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:8px; color:var(--accent); text-decoration:none; font-size:0.9rem; font-weight:600; transition:transform 0.2s, opacity 0.2s; padding:4px 8px; border-radius:8px;" onmouseover="this.style.opacity='0.8'; this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1'; this.style.transform='translateY(0)'">
+        
+        <span>هذا سنابي، لو عندك أي ملاحظة أو سؤال</span>
+      </a>
+    </footer>
   </main>
 
   <script>
@@ -974,6 +1074,88 @@
         }
       });
     }
+
+    // إدارة قسم الطحنة
+    const coffeeTypeSelect = document.getElementById('coffeeType');
+    const grindResult = document.getElementById('grindResult');
+    const grindLevel = document.getElementById('grindLevel');
+
+    const grindLevels = {
+      fine: { // ناعمة
+        types: ['sumatra', 'salvador', 'honduras'],
+        text: 'ناعمة',
+        emoji: ''
+      },
+      medium: { // متوسطة
+        types: ['colombia', 'mexico', 'guatemala', 'costa-rica', 'nicaragua', 'panama', 'peru'],
+        text: 'متوسطة',
+        emoji: ''
+      },
+      coarse: { // خشنة قليلاً
+        types: ['ethiopia', 'yemen', 'rwanda', 'uganda', 'burundi', 'brazil'],
+        text: 'خشنة قليلاً',
+        emoji: ''
+      },
+      extraCoarse: { // خشنة بزيادة
+        types: ['kenya'],
+        text: 'خشنة بزيادة',
+        emoji: ''
+      }
+    };
+
+    if (coffeeTypeSelect) {
+      coffeeTypeSelect.addEventListener('change', () => {
+        const selectedType = coffeeTypeSelect.value;
+        
+        if (!selectedType) {
+          grindResult.style.display = 'none';
+          return;
+        }
+
+        // البحث عن نوع الطحنة المناسب
+        let foundLevel = null;
+        for (const [levelKey, levelData] of Object.entries(grindLevels)) {
+          if (levelData.types.includes(selectedType)) {
+            foundLevel = levelData;
+            break;
+          }
+        }
+
+        if (foundLevel) {
+          grindLevel.textContent = `${foundLevel.emoji} ${foundLevel.text}`;
+          grindResult.style.display = 'block';
+          
+          // إضافة حركة خفيفة
+          grindResult.style.opacity = '0';
+          grindResult.style.transform = 'translateY(-4px)';
+          setTimeout(() => {
+            grindResult.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            grindResult.style.opacity = '1';
+            grindResult.style.transform = 'translateY(0)';
+          }, 10);
+        } else {
+          grindResult.style.display = 'none';
+        }
+      });
+    }
+
+    // تحديث الألوان في الوضع البارد
+    const updateGrindResultColors = () => {
+      if (currentMode === 'cold') {
+        grindResult.style.background = 'linear-gradient(145deg, rgba(219,234,254,0.6), rgba(191,219,254,0.4))';
+        grindResult.style.borderColor = 'rgba(37,99,235,0.3)';
+      } else {
+        grindResult.style.background = 'linear-gradient(145deg, rgba(247,230,209,0.6), rgba(242,201,161,0.4))';
+        grindResult.style.borderColor = 'rgba(196,128,75,0.3)';
+      }
+    };
+
+    // تحديث الألوان عند تغيير الوضع
+    modeChips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        setTimeout(updateGrindResultColors, 100);
+      });
+    });
 
     calculate();
   </script>
