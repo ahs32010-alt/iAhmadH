@@ -127,6 +127,188 @@
     body.dark-mode .dark-mode-toggle {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     }
+    /* صفحة الترحيب */
+    .splash-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.5s ease-out;
+    }
+    .splash-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .splash-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+    .splash-illustration {
+      width: 120px;
+      height: 120px;
+      border-radius: 32px;
+      background:
+        radial-gradient(circle at 30% 0%, #fff7ed, transparent 55%),
+        radial-gradient(circle at 70% 100%, #fed7aa, transparent 55%),
+        linear-gradient(145deg, #f97316, #9a3412);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow:
+        0 20px 50px rgba(148, 94, 54, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.6);
+      animation: scaleIn 0.6s ease-out;
+    }
+    body.cold-mode .splash-illustration {
+      background:
+        radial-gradient(circle at 30% 0%, #eff6ff, transparent 55%),
+        radial-gradient(circle at 70% 100%, #bfdbfe, transparent 55%),
+        linear-gradient(145deg, #0ea5e9, #2563eb);
+      box-shadow:
+        0 20px 50px rgba(37, 99, 235, 0.55),
+        0 0 0 1px rgba(239, 246, 255, 0.9);
+    }
+    body.dark-mode .splash-illustration {
+      background:
+        radial-gradient(circle at 30% 0%, var(--card-soft), transparent 55%),
+        radial-gradient(circle at 70% 100%, var(--card), transparent 55%),
+        linear-gradient(145deg, var(--accent), var(--accent-strong));
+      box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.6),
+        0 0 0 1px var(--border);
+    }
+    body.dark-mode.cold-mode .splash-illustration {
+      background:
+        radial-gradient(circle at 30% 0%, var(--card-soft), transparent 55%),
+        radial-gradient(circle at 70% 100%, var(--card), transparent 55%),
+        linear-gradient(145deg, var(--accent), var(--accent-strong));
+    }
+    .splash-cup {
+      width: 70px;
+      height: 52px;
+      border-radius: 20px 20px 24px 24px;
+      background: #fefce8;
+      position: relative;
+      box-shadow:
+        0 10px 20px rgba(124, 45, 18, 0.4),
+        inset 0 0 0 1px rgba(250, 204, 170, 1);
+    }
+    body.cold-mode .splash-cup {
+      background: #e0f2fe;
+      box-shadow:
+        0 10px 20px rgba(37, 99, 235, 0.35),
+        inset 0 0 0 1px rgba(191, 219, 254, 1);
+    }
+    body.dark-mode .splash-cup {
+      background: var(--card-soft);
+      box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 1px var(--border);
+    }
+    .splash-cup::before {
+      content: "";
+      position: absolute;
+      inset: 9px 9px 18px;
+      border-radius: 14px 14px 22px 22px;
+      background: linear-gradient(180deg, #7c2d12, #431407);
+    }
+    body.cold-mode .splash-cup::before {
+      background: linear-gradient(180deg, #0c4a6e, #075985);
+    }
+    body.dark-mode .splash-cup::before {
+      background: linear-gradient(180deg, var(--accent-soft), var(--accent));
+    }
+    .splash-cup::after {
+      content: "";
+      position: absolute;
+      right: -12px;
+      top: 16px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 3px solid #fed7aa;
+      box-shadow: inset 0 0 0 2px #f97316;
+      background: transparent;
+    }
+    body.cold-mode .splash-cup::after {
+      border-color: #bfdbfe;
+      box-shadow: inset 0 0 0 2px #2563eb;
+    }
+    body.dark-mode .splash-cup::after {
+      border-color: var(--accent-soft);
+      box-shadow: inset 0 0 0 2px var(--accent);
+    }
+    .splash-steam {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+    }
+    .splash-steam span {
+      display: block;
+      width: 5px;
+      height: 20px;
+      border-radius: 999px;
+      background: linear-gradient(to top, rgba(248, 250, 252, 0), rgba(255, 255, 255, 0.95));
+      opacity: 0.8;
+      animation: steam 2.2s ease-in-out infinite;
+    }
+    .splash-steam span:nth-child(2) { animation-delay: .3s; }
+    .splash-steam span:nth-child(3) { animation-delay: .6s; }
+    body.cold-mode .splash-steam {
+      display: none;
+    }
+    .splash-ice-cubes {
+      position: absolute;
+      top: -10px;
+      left: 16px;
+      display: none;
+      gap: 4px;
+    }
+    body.cold-mode .splash-ice-cubes {
+      display: flex;
+    }
+    .splash-ice-cube {
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 2px;
+      box-shadow: 0 1px 2px rgba(37, 99, 235, 0.3);
+      animation: float 2s ease-in-out infinite;
+    }
+    .splash-ice-cube:nth-child(1) { animation-delay: 0s; }
+    .splash-ice-cube:nth-child(2) { animation-delay: 0.4s; }
+    .splash-ice-cube:nth-child(3) { animation-delay: 0.8s; }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
 
     .shell {
       width: min(460px, 100%);
@@ -1439,6 +1621,23 @@
   </style>
 </head>
 <body>
+  <!-- صفحة الترحيب -->
+  <div class="splash-screen" id="splashScreen">
+    <div class="splash-content">
+      <div class="splash-illustration">
+        <div class="splash-cup">
+          <div class="splash-steam">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="splash-ice-cubes">
+            <span class="splash-ice-cube"></span>
+            <span class="splash-ice-cube"></span>
+            <span class="splash-ice-cube"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <button class="dark-mode-toggle" id="darkModeToggle" aria-label="تبديل الوضع الليلي" title="تبديل الوضع الليلي">
     <span id="darkModeIcon">🌙</span>
   </button>
@@ -1769,12 +1968,12 @@
           `<strong style="font-size:0.86rem;">(نصف الكمية قهوة، ونصفها ثلج)</strong>`;
       } else {
         ratioInfoEl.innerHTML =
-          `كل ١ جرام بن ≈ ${ratio.toFixed(1)} مل ماء` +
+          `كل 1 جرام بن ≈ ${ratio.toFixed(1)} مل ماء` +
           `<br><strong style="font-size:0.86rem;">(خلك أفضل على 1/15)</strong>`;
       }
 
       if (currentMode === 'hot') {
-        const bloom = coffee * 2 + 10; // ترطيب = ضعف البن + ١٠ مل
+        const bloom = coffee * 2 + 10; // ترطيب = ضعف البن + 10 مل
         const remaining = totalWater - bloom;
         const eachPour = remaining / 4;
 
@@ -1789,10 +1988,10 @@
 
         const pours = [
           { label: 'الترطيب', amount: bloom, total: totals[0] },
-          { label: 'الصبة ٢', amount: eachPour, total: totals[1] },
-          { label: 'الصبة ٣', amount: eachPour, total: totals[2] },
-          { label: 'الصبة ٤', amount: eachPour, total: totals[3] },
-          { label: 'الصبة ٥', amount: eachPour, total: totals[4] },
+          { label: 'الصبة 2', amount: eachPour, total: totals[1] },
+          { label: 'الصبة 3', amount: eachPour, total: totals[2] },
+          { label: 'الصبة 4', amount: eachPour, total: totals[3] },
+          { label: 'الصبة 5', amount: eachPour, total: totals[4] },
         ];
 
         poursEl.innerHTML = pours
@@ -1832,10 +2031,10 @@
 
         const coldPours = [
           { label: 'الترطيب', amount: bloomCold, total: totalsCold[0] },
-          { label: 'الصبة ٢', amount: eachPourCold, total: totalsCold[1] },
-          { label: 'الصبة ٣', amount: eachPourCold, total: totalsCold[2] },
-          { label: 'الصبة ٤', amount: eachPourCold, total: totalsCold[3] },
-          { label: 'الصبة ٥', amount: eachPourCold, total: totalsCold[4] },
+          { label: 'الصبة 2', amount: eachPourCold, total: totalsCold[1] },
+          { label: 'الصبة 3', amount: eachPourCold, total: totalsCold[2] },
+          { label: 'الصبة 4', amount: eachPourCold, total: totalsCold[3] },
+          { label: 'الصبة 5', amount: eachPourCold, total: totalsCold[4] },
         ];
 
         poursEl.innerHTML = coldPours
@@ -2418,6 +2617,19 @@
       darkModeIcon.textContent = isDark ? '☀️' : '🌙';
       localStorage.setItem('darkMode', isDark);
     });
+
+    // صفحة الترحيب
+    const splashScreen = document.getElementById('splashScreen');
+    if (splashScreen) {
+      // إخفاء الصفحة الترحيبية بعد ثانية وثلاثة أعشار
+      setTimeout(() => {
+        splashScreen.classList.add('hidden');
+        // إزالة الصفحة الترحيبية من DOM بعد انتهاء الانتقال
+        setTimeout(() => {
+          splashScreen.remove();
+        }, 500);
+      }, 1300);
+    }
   </script>
 </body>
 </html>
