@@ -980,6 +980,35 @@
       background: var(--accent);
       border-color: var(--accent-strong);
     }
+    /* رسالة المؤقت في وضع التركيز */
+    .focus-popup .timer-message {
+      text-align: center;
+      margin: 10px 0;
+      padding: 10px 14px;
+      background: linear-gradient(145deg, #f97316, #ea580c);
+      color: #ffffff;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      animation: fadeInMessage 0.5s ease-out;
+      box-shadow: 0 4px 16px rgba(249, 115, 22, 0.5);
+      border: 2px solid #ffffff;
+    }
+    body.cold-mode .focus-popup .timer-message {
+      background: linear-gradient(145deg, #2563eb, #1d4ed8);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.5);
+      border-color: #ffffff;
+    }
+    body.dark-mode .focus-popup .timer-message {
+      background: linear-gradient(145deg, #f97316, #ea580c);
+      box-shadow: 0 4px 16px rgba(249, 115, 22, 0.6);
+      border-color: var(--accent-strong);
+    }
+    body.dark-mode.cold-mode .focus-popup .timer-message {
+      background: linear-gradient(145deg, #3b82f6, #2563eb);
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.6);
+      border-color: var(--accent-strong);
+    }
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -1384,6 +1413,44 @@
       text-align: center;
       margin-bottom: 4px;
     }
+    .timer-message {
+      text-align: center;
+      margin: 10px 0;
+      padding: 10px 14px;
+      background: linear-gradient(145deg, #f97316, #ea580c);
+      color: #ffffff;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      animation: fadeInMessage 0.5s ease-out;
+      box-shadow: 0 4px 16px rgba(249, 115, 22, 0.5);
+      border: 2px solid #ffffff;
+    }
+    body.cold-mode .timer-message {
+      background: linear-gradient(145deg, #2563eb, #1d4ed8);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.5);
+      border-color: #ffffff;
+    }
+    body.dark-mode .timer-message {
+      background: linear-gradient(145deg, #f97316, #ea580c);
+      box-shadow: 0 4px 16px rgba(249, 115, 22, 0.6);
+      border-color: var(--accent-strong);
+    }
+    body.dark-mode.cold-mode .timer-message {
+      background: linear-gradient(145deg, #3b82f6, #2563eb);
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.6);
+      border-color: var(--accent-strong);
+    }
+    @keyframes fadeInMessage {
+      from {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
     .timer-display {
       width: 120px;
       height: 120px;
@@ -1742,10 +1809,12 @@
               </p>
             </div>
             <div class="timer-container" style="margin-top: 14px;">
-              <div class="timer-title">مؤقت (لو تحتاجه)</div>
+              <div class="timer-title">جرب المؤقت (لو تحتاجه)</div>
+              <div class="timer-title">ترا فيه تفاصيل</div>
               <div class="timer-display" id="timerDisplay">
                 <div class="timer-time-text" id="timerTimeText">00:00</div>
-              </div>
+          </div>
+              <div class="timer-message" id="timerMessage" style="display: none;"></div>
               <div class="timer-controls-row">
                 <button type="button" class="timer-btn" id="timerBtn">ابدأ</button>
                 <button type="button" class="timer-btn timer-reset-btn" id="timerResetBtn">إيقاف مؤقت</button>
@@ -1871,6 +1940,9 @@
         </a>
         <a href="https://www.snapchat.com/@iahmad_soliman" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:6px; color:var(--accent); text-decoration:none; font-size:0.9rem; font-weight:600; transition:transform 0.2s, opacity 0.2s; padding:6px 12px; border-radius:8px; background:rgba(255,255,255,0.5);" onmouseover="this.style.opacity='0.8'; this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1'; this.style.transform='translateY(0)'">
           <span>سناب</span>
+        </a>
+        <a href="mailto:Contact@iahmadh.com" style="display:inline-flex; align-items:center; gap:6px; color:var(--accent); text-decoration:none; font-size:0.9rem; font-weight:600; transition:transform 0.2s, opacity 0.2s; padding:6px 12px; border-radius:8px; background:rgba(255,255,255,0.5);" onmouseover="this.style.opacity='0.8'; this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1'; this.style.transform='translateY(0)'">
+          <span>ايميل</span>
         </a>
       </div>
     </footer>
@@ -2004,8 +2076,8 @@
         ];
 
         const pours = [
-          { label: 'الترطيب', amount: bloom, total: totals[0] },
-          { label: 'الصبة 2', amount: eachPour, total: totals[1] },
+          { label: 'الترطيب (صب وانتظر 30 ثانية) ', amount: bloom, total: totals[0] },
+          { label: 'الصبة 2 (كمل بعد الثانية 30)', amount: eachPour, total: totals[1] },
           { label: 'الصبة 3', amount: eachPour, total: totals[2] },
           { label: 'الصبة 4', amount: eachPour, total: totals[3] },
           { label: 'الصبة 5', amount: eachPour, total: totals[4] },
@@ -2257,6 +2329,7 @@
     const timerDisplay = document.getElementById('timerDisplay');
     const timerTimeText = document.getElementById('timerTimeText');
     const timerBtn = document.getElementById('timerBtn');
+    const timerMessage = document.getElementById('timerMessage');
     let timerInterval = null;
     let timerSeconds = 0;
     let timerMaxSeconds = 0; // الحد الأقصى للوقت
@@ -2272,6 +2345,42 @@
       
       // المؤقت تصاعدي فقط: يعرض الوقت المنقضي
       timerTimeText.textContent = formatTime(timerSeconds);
+      
+      // إدارة الرسائل حسب الوقت
+      if (timerMessage && timerInterval) {
+        let messageText = '';
+        let showMessage = false;
+        
+        // من 1 إلى 5 ثواني: ابدأ صبّ
+        if (timerSeconds >= 1 && timerSeconds < 5) {
+          messageText = 'ابدء ترشيح';
+          showMessage = true;
+        }
+        // من 30 إلى 40 ثانية: ابدأ في الصبة الثانية بعد الترطيب
+        else if (timerSeconds >= 30 && timerSeconds < 40) {
+          messageText = 'ابدأ في الصبة الثانية بعد الترطيب';
+          showMessage = true;
+        }
+        // من 160 إلى 170 ثانية (2:40 إلى 2:50): المفترض أنك خلصت أو على وشك
+        else if (timerSeconds >= 160 && timerSeconds < 170) {
+          messageText = 'المفترض أنك خلصت أو على وشك';
+          showMessage = true;
+        }
+        // من 200 إلى 210 ثانية (3:20 إلى 3:30): جرب تخشن الطحنة
+        else if (timerSeconds >= 200 && timerSeconds < 210) {
+          messageText = 'جرب تخشن الطحنة في المرة الجاية، لأنك طولت';
+          showMessage = true;
+        }
+        
+        if (showMessage) {
+          timerMessage.textContent = messageText;
+          timerMessage.style.display = 'block';
+        } else {
+          timerMessage.style.display = 'none';
+        }
+      } else if (timerMessage) {
+        timerMessage.style.display = 'none';
+      }
       
       if (timerInterval) {
         timerDisplay.classList.add('running');
@@ -2340,6 +2449,9 @@
       }
       timerSeconds = 0;
       timerPaused = false;
+      if (timerMessage) {
+        timerMessage.style.display = 'none';
+      }
       updateTimerDisplay();
       timerBtn.textContent = 'ابدأ';
       timerBtn.classList.remove('stop');
@@ -2454,6 +2566,8 @@
           const originalBtn = document.getElementById('timerBtn');
           const originalResetBtn = document.getElementById('timerResetBtn');
           const originalDisplay = document.querySelector('.timer-display');
+          const originalMessage = document.getElementById('timerMessage');
+          const focusTimerMessage = timerClone.querySelector('#timerMessage');
           
           if (originalTimeText) {
             focusTimerTimeText.textContent = originalTimeText.textContent;
@@ -2485,6 +2599,12 @@
               if (originalDisplay.classList.contains('finished')) {
                 focusTimerDisplay.classList.add('finished');
               }
+            }
+            
+            // تحديث الرسالة
+            if (focusTimerMessage && originalMessage) {
+              focusTimerMessage.style.display = originalMessage.style.display;
+              focusTimerMessage.textContent = originalMessage.textContent;
             }
           }
         };
