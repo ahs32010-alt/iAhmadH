@@ -764,6 +764,10 @@
       background: #f3f4f6;
       color: #374151;
       border: 1px solid #e5e7eb;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
     }
     .focus-popup .pour span .pour-label {
       color: #6b7280;
@@ -1239,6 +1243,10 @@
       font-size: 0.9rem;
       min-width: 70px;
       text-align: center;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
     }
     .pour span .pour-label {
       color: var(--muted);
@@ -2239,8 +2247,8 @@
         ];
 
         const coldPours = [
-          { label: 'الترطيب', amount: bloomCold, total: totalsCold[0] },
-          { label: 'الصبة 2', amount: eachPourCold, total: totalsCold[1] },
+          { label: 'الترطيب (صب وانتظر 30 ثانية)', amount: bloomCold, total: totalsCold[0] },
+          { label: 'الصبة 2 (كمل بعد الثانية 30)', amount: eachPourCold, total: totalsCold[1] },
           { label: 'الصبة 3', amount: eachPourCold, total: totalsCold[2] },
           { label: 'الصبة 4', amount: eachPourCold, total: totalsCold[3] },
           { label: 'الصبة 5', amount: eachPourCold, total: totalsCold[4] },
