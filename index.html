@@ -780,10 +780,15 @@
       background: #f9fafb;
       border-color: #e5e7eb;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      padding: 10px;
+      gap: 8px;
+      border-radius: 12px;
     }
     .focus-popup .timer-display {
+      width: 100px;
+      height: 100px;
       background: linear-gradient(145deg, #ffffff, #f9fafb);
-      border-color: #d1d5db;
+      border: 2.5px solid #d1d5db;
       box-shadow: 
         0 4px 12px rgba(0, 0, 0, 0.1),
         inset 0 1px 3px rgba(255, 255, 255, 0.9);
@@ -797,6 +802,7 @@
     }
     .focus-popup .timer-time-text {
       color: #111827;
+      font-size: 1.2rem;
     }
     .focus-popup .timer-display.running .timer-time-text {
       color: #2563eb;
@@ -806,6 +812,10 @@
       border: 1px solid #2563eb;
       color: #ffffff;
       box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+      padding: 8px;
+      font-size: 0.85rem;
+      min-height: 38px;
+      border-radius: 10px;
     }
     .focus-popup .timer-btn:hover {
       background: #2563eb;
@@ -826,6 +836,10 @@
       border: 1px solid #e5e7eb;
       color: #374151;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      padding: 8px;
+      font-size: 0.85rem;
+      min-height: 38px;
+      border-radius: 10px;
     }
     .focus-popup .timer-reset-btn:hover {
       background: #e5e7eb;
@@ -985,12 +999,12 @@
     /* رسالة المؤقت في وضع التركيز */
     .focus-popup .timer-message {
       text-align: center;
-      margin: 10px 0;
-      padding: 10px 14px;
+      margin: 8px 0;
+      padding: 8px 12px;
       background: linear-gradient(145deg, #f97316, #ea580c);
       color: #ffffff;
-      border-radius: 10px;
-      font-size: 0.9rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
       font-weight: 800;
       animation: fadeInMessage 0.5s ease-out;
       box-shadow: 0 4px 16px rgba(249, 115, 22, 0.5);
@@ -1394,10 +1408,10 @@
     .timer-container {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      padding: 12px;
+      gap: 8px;
+      padding: 10px;
       background: rgba(255, 255, 255, 0.95);
-      border-radius: 14px;
+      border-radius: 12px;
       border: 1px solid var(--border);
       box-shadow: 0 4px 12px rgba(148, 94, 54, 0.08);
     }
@@ -1410,20 +1424,20 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     .timer-title {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--muted);
       font-weight: 600;
       text-align: center;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
     .timer-message {
       text-align: center;
-      margin: 10px 0;
-      padding: 10px 14px;
+      margin: 8px 0;
+      padding: 8px 12px;
       background: linear-gradient(145deg, #f97316, #ea580c);
       color: #ffffff;
-      border-radius: 10px;
-      font-size: 0.9rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
       font-weight: 800;
       animation: fadeInMessage 0.5s ease-out;
       box-shadow: 0 4px 16px rgba(249, 115, 22, 0.5);
@@ -1455,13 +1469,13 @@
       }
     }
     .timer-display {
-      width: 120px;
-      height: 120px;
+      width: 100px;
+      height: 100px;
       margin: 0 auto;
       position: relative;
       border-radius: 50%;
       background: linear-gradient(145deg, #ffffff, #fef7f0);
-      border: 3px solid var(--accent);
+      border: 2.5px solid var(--accent);
       box-shadow: 
         0 4px 12px rgba(148, 94, 54, 0.15),
         inset 0 2px 4px rgba(255, 255, 255, 0.9);
@@ -1481,7 +1495,7 @@
       animation: pulseTimerIdleDarkCold 2s ease-in-out infinite;
     }
     .timer-time-text {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       font-weight: 800;
       color: var(--accent-strong);
       font-variant-numeric: tabular-nums;
@@ -1687,11 +1701,11 @@
       border: none;
       background: transparent;
       color: var(--muted);
-      padding: 6px 10px;
-      font-size: 0.8rem;
+      padding: 5px 8px;
+      font-size: 0.75rem;
       font-weight: 700;
       cursor: pointer;
-      border-radius: 8px;
+      border-radius: 7px;
       transition: all 0.2s ease;
       white-space: nowrap;
     }
@@ -1713,21 +1727,21 @@
     .timer-input-group {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       background: var(--card-soft);
-      padding: 6px 10px;
-      border-radius: 10px;
+      padding: 5px 8px;
+      border-radius: 8px;
       border: 1px solid var(--border);
     }
     body.cold-mode .timer-input-group {
       background: rgba(239, 246, 255, 0.9);
     }
     .timer-input {
-      width: 45px;
+      width: 40px;
       background: transparent;
       border: none;
       color: var(--text);
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 700;
       text-align: center;
       padding: 0;
@@ -1736,22 +1750,22 @@
       outline: none;
     }
     .timer-label {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--muted);
       font-weight: 600;
     }
     .timer-btn {
       flex: 1;
-      border-radius: 12px;
+      border-radius: 10px;
       border: none;
       background: var(--accent);
       color: #ffffff;
-      padding: 10px;
-      font-size: 0.95rem;
+      padding: 8px;
+      font-size: 0.85rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s ease;
-      min-height: 44px;
+      min-height: 38px;
       box-shadow: 0 4px 10px rgba(196, 128, 75, 0.25);
       user-select: none;
       -webkit-user-select: none;
@@ -2058,14 +2072,14 @@
     <footer style="margin-top:8px;">
       <div style="margin-bottom:8px; font-size:0.9rem; font-weight:600; color:var(--text);">تواصل معي لو عندك أي ملاحظة أو استفسار:</div>
       <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-        <a href="https://t.me/iAhmadH" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:6px; color:var(--accent); text-decoration:none; font-size:0.9rem; font-weight:600; transition:transform 0.2s, opacity 0.2s; padding:6px 12px; border-radius:8px; background:rgba(255,255,255,0.5);" onmouseover="this.style.opacity='0.8'; this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1'; this.style.transform='translateY(0)'">
-          <span>تليقرام</span>
+        <a href="https://t.me/iAhmadH" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; justify-content:center; text-decoration:none; transition:transform 0.2s, opacity 0.2s; padding:10px; border-radius:8px; background:rgba(255,255,255,0.5); width:44px; height:44px;" onmouseover="this.style.opacity='0.8'; this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1'; this.style.transform='translateY(0)'" title="تليقرام">
+          <img src="images/telegram.png" alt="تليقرام" style="width:24px; height:24px; object-fit:contain;">
         </a>
-        <a href="https://www.snapchat.com/@iahmad_soliman" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:6px; color:var(--accent); text-decoration:none; font-size:0.9rem; font-weight:600; transition:transform 0.2s, opacity 0.2s; padding:6px 12px; border-radius:8px; background:rgba(255,255,255,0.5);" onmouseover="this.style.opacity='0.8'; this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1'; this.style.transform='translateY(0)'">
-          <span>سناب</span>
+        <a href="https://www.snapchat.com/@iahmad_soliman" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; justify-content:center; text-decoration:none; transition:transform 0.2s, opacity 0.2s; padding:10px; border-radius:8px; background:rgba(255,255,255,0.5); width:44px; height:44px;" onmouseover="this.style.opacity='0.8'; this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1'; this.style.transform='translateY(0)'" title="سناب شات">
+          <img src="images/snapchat.png" alt="سناب شات" style="width:24px; height:24px; object-fit:contain;">
         </a>
-        <a href="mailto:Contact@iahmadh.com" style="display:inline-flex; align-items:center; gap:6px; color:var(--accent); text-decoration:none; font-size:0.9rem; font-weight:600; transition:transform 0.2s, opacity 0.2s; padding:6px 12px; border-radius:8px; background:rgba(255,255,255,0.5);" onmouseover="this.style.opacity='0.8'; this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1'; this.style.transform='translateY(0)'">
-          <span>ايميل</span>
+        <a href="mailto:Contact@iahmadh.com" style="display:inline-flex; align-items:center; justify-content:center; text-decoration:none; transition:transform 0.2s, opacity 0.2s; padding:10px; border-radius:8px; background:rgba(255,255,255,0.5); width:44px; height:44px;" onmouseover="this.style.opacity='0.8'; this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1'; this.style.transform='translateY(0)'" title="البريد الإلكتروني">
+          <img src="images/email.png" alt="البريد الإلكتروني" style="width:24px; height:24px; object-fit:contain;">
         </a>
       </div>
     </footer>
