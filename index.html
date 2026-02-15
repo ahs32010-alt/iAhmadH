@@ -2165,8 +2165,8 @@
         coffee = 18;
         coffeeInput.value = 18;
       }
-      // إخفاء رسالة الحد الأدنى إذا الكمية ١٨ أو أكثر (مثلاً بعد ما يعدّل المستخدم يدوياً)
-      if (currentMode === 'cold' && coffee >= 18 && coldMinMessageEl) coldMinMessageEl.style.display = 'none';
+      // إخفاء رسالة الحد الأدنى فقط إذا الكمية أكبر من ١٨ (مثلاً بعد ما يزود المستخدم الرقم)
+      if (currentMode === 'cold' && coffee > 18 && coldMinMessageEl) coldMinMessageEl.style.display = 'none';
       let ratio;
 
       if (ratioSelect.value === 'custom') {
