@@ -2164,10 +2164,9 @@
       if (currentMode === 'cold' && (isNaN(coffee) || coffee < 18)) {
         coffee = 18;
         coffeeInput.value = 18;
-        if (coldMinMessageEl) coldMinMessageEl.style.display = 'block';
-      } else {
-        if (coldMinMessageEl) coldMinMessageEl.style.display = 'none';
       }
+      // إخفاء رسالة الحد الأدنى إذا الكمية ١٨ أو أكثر (مثلاً بعد ما يعدّل المستخدم يدوياً)
+      if (currentMode === 'cold' && coffee >= 18 && coldMinMessageEl) coldMinMessageEl.style.display = 'none';
       let ratio;
 
       if (ratioSelect.value === 'custom') {
@@ -2304,8 +2303,13 @@
         const step = parseInt(btn.dataset.step, 10) || 1;
         let current = parseFloat(coffeeInput.value) || 0;
         const minCoffee = currentMode === 'cold' ? 18 : 1;
-        current = Math.max(minCoffee, current + step);
+        const wouldBe = current + step;
+        current = Math.max(minCoffee, wouldBe);
         coffeeInput.value = current;
+        // في القهوة الباردة: إظهار الرسالة عند الضغط على السالب (−) أو السهم للأسفل لما الكمية توصل ١٨
+        if (coldMinMessageEl && currentMode === 'cold' && step < 0 && wouldBe < 18) {
+          coldMinMessageEl.style.display = 'block';
+        }
         calculate();
       });
     });
@@ -2349,6 +2353,20 @@
       if (!el) return;
       el.addEventListener('input', calculate);
     });
+
+    // السهم للأسفل على حقل البن: في الوضع البارد منع النزول تحت ١٨ وإظهار الرسالة
+    if (coffeeInput) {
+      coffeeInput.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowDown' || currentMode !== 'cold') return;
+        const cur = parseFloat(coffeeInput.value) || 0;
+        if (cur <= 18) {
+          e.preventDefault();
+          coffeeInput.value = 18;
+          if (coldMinMessageEl) coldMinMessageEl.style.display = 'block';
+          calculate();
+        }
+      });
+    }
 
     // تفاعل "عالج كوبك"
     if (fixChoices) {
