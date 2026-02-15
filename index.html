@@ -1072,6 +1072,16 @@
       align-items: center;
       gap: 6px;
     }
+    /* إخفاء أسهم الأعلى/الأسفل من حقل الرقم والاكتفاء بأزرار + و − */
+    .input-row input[type="number"]::-webkit-outer-spin-button,
+    .input-row input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .input-row input[type="number"] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
     .input-step {
       border-radius: 999px;
       border: 1px solid rgba(148,94,54,0.22);
