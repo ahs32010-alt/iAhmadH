@@ -1909,6 +1909,9 @@
                 <input id="coffee" type="number" min="1" step="1" value="20" inputmode="numeric" placeholder="مثال: 20">
                 <button type="button" class="input-step" data-step="1">+</button>
               </div>
+              <div id="coldMinMessage" class="muted" style="font-size:0.85rem;margin-top:6px;display:none;color:var(--accent-strong);">
+                أقل كمية سويها ١٨ جرام بحيث تضبط معك
+              </div>
             </div>
 
             <div class="field inline">
@@ -2096,6 +2099,7 @@
     const poursEl = document.getElementById('pours');
     const ratioInfoEl = document.getElementById('ratioInfo');
     const coldLineEl = document.getElementById('coldLine');
+    const coldMinMessageEl = document.getElementById('coldMinMessage');
     const stepButtons = Array.from(document.querySelectorAll('.input-step'));
     const modeChips = Array.from(document.querySelectorAll('.mode-chip'));
     const fixChoices = document.getElementById('fixChoices');
@@ -2160,6 +2164,9 @@
       if (currentMode === 'cold' && (isNaN(coffee) || coffee < 18)) {
         coffee = 18;
         coffeeInput.value = 18;
+        if (coldMinMessageEl) coldMinMessageEl.style.display = 'block';
+      } else {
+        if (coldMinMessageEl) coldMinMessageEl.style.display = 'none';
       }
       let ratio;
 
