@@ -1919,9 +1919,7 @@
                 <input id="coffee" type="number" min="1" step="1" value="20" inputmode="numeric" placeholder="مثال: 20">
                 <button type="button" class="input-step" data-step="1">+</button>
               </div>
-              <div id="coldMinMessage" class="muted" style="font-size:0.85rem;margin-top:6px;display:none;color:#dc2626;">
-                أقل كمية سويها ١٨ جرام بحيث تضبط معك
-              </div>
+              <div id="coffeeMinMessage" class="muted" style="font-size:0.85rem;margin-top:6px;display:none;color:#dc2626;"></div>
             </div>
 
             <div class="field inline">
@@ -2109,7 +2107,7 @@
     const poursEl = document.getElementById('pours');
     const ratioInfoEl = document.getElementById('ratioInfo');
     const coldLineEl = document.getElementById('coldLine');
-    const coldMinMessageEl = document.getElementById('coldMinMessage');
+    const coffeeMinMessageEl = document.getElementById('coffeeMinMessage');
     const stepButtons = Array.from(document.querySelectorAll('.input-step'));
     const modeChips = Array.from(document.querySelectorAll('.mode-chip'));
     const fixChoices = document.getElementById('fixChoices');
@@ -2170,9 +2168,12 @@
 
     function calculate() {
       let coffee = parseFloat(coffeeInput.value);
-      // في الوضع البارد: إظهار الملاحظة إذا الكمية أقل من ١٨ (بدون منع)
-      if (coldMinMessageEl && currentMode === 'cold') {
-        coldMinMessageEl.style.display = (coffee < 18 && !isNaN(coffee) && coffee > 0) ? 'block' : 'none';
+      // إظهار ملاحظة الكمية الأدنى (حار: ١٥ جرام، بارد: ١٨ جرام) بدون منع
+      if (coffeeMinMessageEl && !isNaN(coffee) && coffee > 0) {
+        const minG = currentMode === 'cold' ? 18 : 15;
+        const show = currentMode === 'cold' ? coffee < 18 : coffee < 15;
+        coffeeMinMessageEl.textContent = `أقل كمية سويها ${minG} جرام بحيث تضبط معك`;
+        coffeeMinMessageEl.style.display = show ? 'block' : 'none';
       }
       let ratio;
 
