@@ -1919,7 +1919,7 @@
                 <input id="coffee" type="number" min="1" step="1" value="20" inputmode="numeric" placeholder="مثال: 20">
                 <button type="button" class="input-step" data-step="1">+</button>
               </div>
-              <div id="coldMinMessage" class="muted" style="font-size:0.85rem;margin-top:6px;display:none;color:var(--accent-strong);">
+              <div id="coldMinMessage" class="muted" style="font-size:0.85rem;margin-top:6px;display:none;color:#dc2626;">
                 أقل كمية سويها ١٨ جرام بحيث تضبط معك
               </div>
             </div>
@@ -2170,13 +2170,10 @@
 
     function calculate() {
       let coffee = parseFloat(coffeeInput.value);
-      // في الوضع البارد الحد الأدنى 18 جرام
-      if (currentMode === 'cold' && (isNaN(coffee) || coffee < 18)) {
-        coffee = 18;
-        coffeeInput.value = 18;
+      // في الوضع البارد: إظهار الملاحظة إذا الكمية أقل من ١٨ (بدون منع)
+      if (coldMinMessageEl && currentMode === 'cold') {
+        coldMinMessageEl.style.display = (coffee < 18 && !isNaN(coffee) && coffee > 0) ? 'block' : 'none';
       }
-      // إخفاء رسالة الحد الأدنى فقط إذا الكمية أكبر من ١٨ (مثلاً بعد ما يزود المستخدم الرقم)
-      if (currentMode === 'cold' && coffee > 18 && coldMinMessageEl) coldMinMessageEl.style.display = 'none';
       let ratio;
 
       if (ratioSelect.value === 'custom') {
@@ -2312,14 +2309,8 @@
       btn.addEventListener('click', () => {
         const step = parseInt(btn.dataset.step, 10) || 1;
         let current = parseFloat(coffeeInput.value) || 0;
-        const minCoffee = currentMode === 'cold' ? 18 : 1;
-        const wouldBe = current + step;
-        current = Math.max(minCoffee, wouldBe);
+        current = Math.max(1, current + step);
         coffeeInput.value = current;
-        // في القهوة الباردة: إظهار الرسالة عند الضغط على السالب (−) أو السهم للأسفل لما الكمية توصل ١٨
-        if (coldMinMessageEl && currentMode === 'cold' && step < 0 && wouldBe < 18) {
-          coldMinMessageEl.style.display = 'block';
-        }
         calculate();
       });
     });
@@ -2332,16 +2323,7 @@
 
         modeChips.forEach((c) => c.classList.toggle('active', c === chip));
         currentMode = mode;
-        // عند اختيار القهوة الباردة: الحد الأدنى 18 جرام
-        if (currentMode === 'cold') {
-          const cur = parseFloat(coffeeInput.value) || 0;
-          if (cur < 18) {
-            coffeeInput.value = 18;
-          }
-          coffeeInput.setAttribute('min', '18');
-        } else {
-          coffeeInput.setAttribute('min', '1');
-        }
+        coffeeInput.setAttribute('min', '1');
         document.body.classList.toggle('cold-mode', currentMode === 'cold');
         calculate();
       });
@@ -2364,19 +2346,6 @@
       el.addEventListener('input', calculate);
     });
 
-    // السهم للأسفل على حقل البن: في الوضع البارد منع النزول تحت ١٨ وإظهار الرسالة
-    if (coffeeInput) {
-      coffeeInput.addEventListener('keydown', (e) => {
-        if (e.key !== 'ArrowDown' || currentMode !== 'cold') return;
-        const cur = parseFloat(coffeeInput.value) || 0;
-        if (cur <= 18) {
-          e.preventDefault();
-          coffeeInput.value = 18;
-          if (coldMinMessageEl) coldMinMessageEl.style.display = 'block';
-          calculate();
-        }
-      });
-    }
 
     // تفاعل "عالج كوبك"
     if (fixChoices) {
